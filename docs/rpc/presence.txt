@@ -1,0 +1,31 @@
+
+The Presence service handles client subscriptions to objects and interfaces client's requests to change the
+data for an object that it has previously been subscribed to.
+
+After a *client* has mapped an object which it wants to subscribe to, it will call Subscribe(). The object
+will then make notifications to the client whenever something changes server-side. The client will likewise
+call Update() when it wants to change fields on an object that it has subscribed to.
+
+If the field operation sent to Update() contains no value, the update request can be discarded (because it
+doesn't actually change anything, we don't need to do anything).
+
+If the client makes an object creation request it will not try to subscribe to it, since the creation itself
+subscribes the client to the object. Note that this is not true in the case of account or toon creation --
+because of the handing off that must be done the client has to ask for subscriptions to both after logon and
+selection.
+
+== Player status example ==
+
+When a Channel has been properly mapped and subscribed to, the client will make three Update() calls when the
+player changes his away status. The request, in order, will be (see notification-data-layout.txt):
+
+** This is incorrect! Need to understand why it sends us the D3.4.1 field in the first place, then adapt to
+what it means for the multi-channel model. It is unlikely that the first call sets a channel to modify/notify
+on, but that is the only explanation I can come up with at this time. **
+
+* D3.4.1 - Channel ID (should contain no value after first call, since the client isn't switching channels)
+* D3.4.2 - Away status
+* D3.4.3 - Away message (currently always null -- there is no way to set it in the client)
+
+These should be re-routed to the object so that it can change the values on itself and broadcast the
+notification to all (all other?) subscribers.
