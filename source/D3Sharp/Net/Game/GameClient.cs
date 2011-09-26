@@ -7940,7 +7940,10 @@ namespace D3Sharp.Net.Game
                 return;
             }
             else if (objectIdsSpawned == null || !objectIdsSpawned.Contains(msg.Field1)) return;
-
+            if (msg.Field1 == null); //
+            { //
+                SpawnMob(mobs[rand.Next(0, mobs.Length)]); // dirty hack to always spawn the next mob -ice@#d3sharp
+            } //
             objectIdsSpawned.Remove(msg.Field1);
 
             var killAni = new int[]{
@@ -7987,8 +7990,8 @@ namespace D3Sharp.Net.Game
             {
                 Id = 0xd0,
                 Field0 = msg.Field1,
-                Field1 = 9001.0f,
-                Field2 = 0,
+                Field1 = rand.Next(1000, 13000), // randomly generated between 1000 and 13000 -ice@#d3sharp
+                Field2 = rand.Next(1, 4), // randomized damage color code: 1 = white, 2 = yellow, 3 = red, 4 = larger red -ice@#d3sharp
             });
 
             SendMessage(new ANNDataMessage()
@@ -8094,17 +8097,17 @@ namespace D3Sharp.Net.Game
         {
             var oldPosField1 = position.Field1;
             var oldPosField2 = position.Field2;
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < rand.Next(1, 2); i++) // can spawn either 1 or 2 new mobs -ice@#d3sharp
             {
                 if ((i % 2) == 0)
                 {
-                    position.Field0 += (float)(rand.NextDouble() * 20);
-                    position.Field1 += (float)(rand.NextDouble() * 20);
+                    position.Field0 += (float)(rand.NextDouble() * rand.Next(-40, 40)); // randomized spawn location -ice@#d3sharp
+                    position.Field1 += (float)(rand.NextDouble() * rand.Next(-40, 40)); // randomized spawn location -ice@#d3sharp
                 }
                 else
                 {
-                    position.Field0 -= (float)(rand.NextDouble() * 20);
-                    position.Field1 -= (float)(rand.NextDouble() * 20);
+                    position.Field0 -= (float)(rand.NextDouble() * rand.Next(-40, 40)); // randomized spawn location -ice@#d3sharp
+                    position.Field1 -= (float)(rand.NextDouble() * rand.Next(-40, 40)); // randomized spawn location -ice@#d3sharp
                 }
                 SpawnMob(mobs[rand.Next(0, mobs.Length)]);
             }
@@ -8647,8 +8650,8 @@ namespace D3Sharp.Net.Game
                         },
                         Field1 = new Vector3D()
                         {
-                            Field0 = position.Field0 + 5,
-                            Field1 = position.Field1 + 5,
+                            Field0 = position.Field0 + rand.Next(-40, 40), // randomized spawn location -ice@#d3sharp
+                            Field1 = position.Field1 + rand.Next(-40, 40), // randomized spawn location -ice@#d3sharp
                             Field2 = position.Field2,
                         },
                     },
