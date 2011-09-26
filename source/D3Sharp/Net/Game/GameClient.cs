@@ -45,7 +45,7 @@ namespace D3Sharp.Net.Game
         public World GameWorld;
         public float posx, posy, posz;
         int objectId = 0x78f50114 + 100;
-        int[] mobs = { 5346, 5347, 5350, 5360, 5361, 5362, 5363, 5365, 5387, 5393, 5395, 5397, 5411, 5428, 5432, 5433, 5467 };
+        int[] mobs = { 5393, 5395, 5397, 5411 }; // skeletons only because it makes no sense spawning minibosses etc.. -ice@#d3sharp
 
         Random rand = new Random();
         IList<int> objectIdsSpawned = null;
